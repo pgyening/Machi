@@ -1,0 +1,228 @@
+*********** GIT ************
+
+Software Configuration Management (SCM)
+Build Management
+Continuous Integration
+Change Management
+Continuous Delivery
+Packaging Management
+Release Management
+
+--Teamwork (co-ordination)
+--Defect tracking (who ,when, what)
+--Configuration auditing (creating report)
+
+git:- it is a process of tracking and controlling/maintaining  changes in the software
+--> Git is distributed revision control system/version controling system
+--> Types of CMS tools -->PVCS, CVS,Perforce, clear case, svn(subversion open source)
+
+git features compare to other tools:- 
+	1. Speed
+	2. Support for non-linear development(thounds of parallel branches)
+	3. distributed version control system
+	4. Able to handle large projects like linux efficiently
+
+Why Git is Distributed Version Control system: -
+	1. Speed
+	2. Network Issues
+	3. we can share the changes to any users and centralized server
+	4. it stores in the form of snapshots i.e diff b/n existing file data and currently modified file data.
+	     commit id/check in :- with 40 char long
+	5. in workspace we've 3 stages before commit id get generated
+	        --> working dir:- where you working with files physically
+	        --> Staging Area:- it helps to create commit id(it is virtual area , here workspace don't know which one is existing and modified data)
+	        --> Repository:- where stores data (commited file)
+
+
+Git Terminology:-
+1. client/server
+2. workspace: - space where the client comm with server
+3. Repository : - it is a container/Directory. for each product/project we've one repository in the server.
+4. Branch :- parallel development
+5. Checkin:- Once the changes done, storing back to the server to maintain perminentaly
+     Checkout:- Taking petmission from server to do modifications.	
+6. Revision/Version id: - git will track all the info of changes done by a user like when,which repo,who,which file, what changes) 
+7. Baseline
+
+
+GIT BASH:
+-------------
+git syntax:-  git <command> --<options>
+
+git config --global user.name "vinodh machi"
+git config --global user.email "vinodhk070@gmail.com
+git config --push.default simple
+git config --list
+
+creating Repositorys:-
+1. bare repo: is the centrailized repository which is used to store and share the changes. 
+2. non-bare repo: user (or) workspace (or) local repository whih is used to modify the changes.
+
+mkdir central.git
+git init --bare
+git clone central.git <source>  vinuspace <dest>
+create file in workspace 
+move to staging area : git add java
+move from staging repo : git commit -m "first chickin"
+
+-->git log : list of all the commits will display
+--> set of changes together with single version id: git add . (or) java, oracle...etc
+
+if you don't have the same content then-->Modified/Untracked files
+if you have same content in the file then --> Unmodified 
+
+--> git push <source> <dest>
+--> git push enter : to push the changes to repository for sharing to other users
+--> 2nd user access the repo and created new file and pushed it to central repo and now
+     1user want to update things what user2 changed. then use
+-->git pull
+
+Git ignoring:
+=============
+--> .gitignore : is a conf file to ignore the unwanted runtime files like jar, war, log....
+	eg:create one text file with file type all files, and to repo.
+              .xml (pass this in vim)
+             *.class (pattern matching)
+Log viewing:
+============
+--> git log -3
+--> git log --oneline --grep "workspace"
+--> git log --grep "stringmasg" --oneline
+--> git shortlog
+
+Branching:- 
+===========
+--> parallel development
+--> storing of files in a repo is in the form of branches 
+       ex:  android 			windows
+               file1			    file1
+               file2			    file2
+              	
+       here the futures are same only slight diff i.e os
+--> master is the default branch whenever we create repository/workspace
+--> at any point of time you can work with  only one branch at a time
+--> git branch : list of branches avilable
+      git branch branch name
+      git checkout new_branch : switch to other branch
+--> when we create a new branch based on the master the same fiels and commit ids will come to new branch also.
+# merging the 2 branches:-
+--> git merge <sour> <dest>
+
+--> bare repo  you will not have working dir, so i.e you not able to see
+
+checkout command:-
+==================
+Actually syntax is  git checkout <BRANCH>:<COMMITID>
+   1.git checkout  NEW_BRANCH@latest_commit id
+     git checkout <default branch(current branch)>@commit id	
+     git checkout master --> go back to default branch and latest commit id
+     git checkout eef345df --> checkout specific commit
+   2. git checkout branch_name --> to switch one branch to another   
+   3. git checkout -- file1 file2 --> to dicard the changes in working directory(when only files deleted from work dir)
+
+Stashing commited changes :-
+============================
+stashing will do 2 things 
+	1. whenever you modifing the changes it will take backup.
+	2. and it revert back with orginal position of the file where you started.
+git stash --> create stash, remove changes from working directory(when files create and edit)
+git stash list--> list all stash available for the repository
+git stash apply stash@{0} -->my 1st idea  is good (it only apply it not remove)
+git stash pop --> it will apply and remove the last stash array
+git stash clear--> remove all backup entrys
+
+Undo/Reverting Changes after adding to staging area :- 
+=====================================================
+i added a file into staging area, now i want to modify it before going to commit it?
+sol is :      1. git reset (mixed is the default option)
+              2. git reset --mixed --> revert back / undo the changes from staging area
+              3. git reset --hard --> to remove changes from all the 3 areas
+						@ working directory
+						@ staging Area
+						@ Repository(once file came to staging area, it creats temperary commit id in repo)
+              4. git reset --soft --> remove changes only in repo temp id (HEAD)
+HEAD--> once we add file into staging area it create one temp id in the repo as a reference, this is the 
+            latest commit id which we working.
+
+Undo/Reverting Changes after commitid:-
+=======================================
+   1. git revert 256ed01(1st 7char)  --> it revert only the content not the complete entry(commit id)  and create a new commit id and refering to previous.
+ 
+Removing files:
+===============
+git rm filename 
+git clean -n(dry run means which are the file eligible to remove, very care full before running this)	
+git clean -f( removes the untracked file instead of adding to .gitignore conf file)
+
+Tags:-
+-------
+to identify/reference for a commitid to quick access
+git tag -a <pattern> -m "comment" <commitid>
+git tag
+git show tag <tag_name>
+git tag -d <tag_name>
+
+Diff:-
+======
+difference between 2 branches, --stat, commit ids...etc
+git diff
+git diff vinumaa master
+git diff 2b7889f4..08j86gj9
+git diff --stat 2b7889f4..08j86gj9
+Bisect:-
+--------
+first it will bisect/divide the given range into 2 parts and start executing 
+	1. range between culprit/bug is there
+	2. pass Script file
+	     git bisect run rspec spec/features/my_broken_spec.rb
+	     exit status 0(success) 1(failure)
+	3. git bisect good
+	   git bisect bad
+Manual Bisecting:
+	git bisect start
+	git bisect good c09c728
+	git bisect bad e6a0692
+Automate Bisecting:
+	git bisect start
+	git bisect good c09c728
+	git bisect bad e6a0692
+
+	git bisect run rspec spec/features/my_broken_spec.rb
+
+GitHub:-
+========
+	@ is a website to upload repositories online
+	@ Provides backup
+	@ Provides visual interface to repo
+	@ makes collaboration easier
+
+
+
+
+############or create a new repository on the command line#########
+
+echo "# gitsample" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/vinodhk070/gitsample.git
+git push -u origin master
+
+
+############### push an existing repository from the command line###########
+
+git remote add origin https://github.com/vinodhk070/gitsample.git
+git push -u origin master
+
+
+* git clone https://github.com/vinodhk070/Machi.git
+*
+
+
+NEW THINGS IN GIT: 
+*****************
+* gitk
+
+
+
+
