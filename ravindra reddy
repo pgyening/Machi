@@ -1,3 +1,4 @@
 git rm filename 
 git clean -n(dry run means which are the file eligible to remove, very care full before running this)	
 git clean -f( removes the untracked file instead of adding to .gitignore conf file)
+new ravi added
